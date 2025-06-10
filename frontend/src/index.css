@@ -1,10 +1,19 @@
 :root {
-  --primary-color: #ff69b4; /* Pink */
-  --primary-dark: #ff1493; /* Deeper pink for hover states */
-  --background-color: #ffffff;
-  --text-color: #333333;
-  --error-color: #ff4081;
-  --success-color: #4caf50;
+  --primary-color: #e91e63; /* Deep Pink - improved saturation */
+  --primary-light: #f06292; /* Light Pink for hover states */
+  --accent-color: #ff4081; /* Hot Pink accent */
+  --accent-light: #ff80ab; /* Lighter pink for accents */
+  --secondary-color: #9c27b0; /* Purple complementary */
+  --background-color: #fce4ec; /* Very light pink background */
+  --surface-color: #ffffff; /* Pure white for cards/surfaces */
+  --text-primary: #2e2e2e; /* Dark gray for primary text */
+  --text-secondary: #757575; /* Medium gray for secondary text */
+  --text-muted: #9e9e9e; /* Light gray for muted text */
+  --success-color: #4caf50; /* Green for success states */
+  --error-color: #f44336; /* Red for error states */
+  --warning-color: #ff9800; /* Orange for warnings */
+  --border-color: #f8bbd9; /* Light pink for borders */
+  --shadow-color: rgba(233, 30, 99, 0.15); /* Pink-tinted shadow */
 }
 
 body {
@@ -14,25 +23,42 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
+  background: linear-gradient(135deg, var(--background-color) 0%, #fce7f3 100%);
+  color: var(--text-primary);
+  min-height: 100vh;
 }
 
 /* Header styles */
 .header {
   text-align: center;
   margin-bottom: 2rem;
-  background-color: var(--primary-color);
-  padding: 1.5rem 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  padding: 2rem 0;
+  box-shadow: 0 4px 20px var(--shadow-color);
+  position: relative;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(233, 30, 99, 0.2) 100%);
+  pointer-events: none;
 }
 
 .header h1 {
   color: white;
-  font-size: 2.5rem;
+  font-size: 3rem;
   margin: 0;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-weight: 800;
+  letter-spacing: 4px;
   text-transform: uppercase;
+  text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);  position: relative;
+  z-index: 1;
 }
 
 /* Container styles */
@@ -66,7 +92,6 @@ body {
 }
 
 .media-content {
-  height: 300px;
   position: relative;
   background: #f8f9fa;
   overflow: hidden;
@@ -78,8 +103,9 @@ body {
 .media-content img,
 .media-content video {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
   display: block;
 }
 
@@ -89,7 +115,7 @@ body {
 
 .media-title {
   margin: 0;
-  color: var(--text-color);
+  color: var(--text-primary);
   font-size: 1.1rem;
   font-weight: 500;
 }

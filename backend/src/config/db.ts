@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const MONGO_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/media-db";
+  process.env.MONGODB_URI || "mongodb://localhost:27017/minly";
 
 export const connectToDatabase = async (): Promise<void> => {
   try {

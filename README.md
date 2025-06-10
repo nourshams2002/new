@@ -1,60 +1,106 @@
-# MINLY Project
+# MINLY - Media Management System
 
-MINLY is a full-stack media sharing platform that allows users to upload, view, and interact with media content (images/videos) via web and mobile applications. The project is divided into three main parts: backend, frontend, and mobile app.
+A simple full-stack app for uploading and managing images/videos. Built this to learn TypeScript, React, and Node.js.
+
+## What it does
+
+- Upload images and videos
+- View them in a nice grid
+- Like/unlike media
+- Delete stuff you don't want
+- Works on web and mobile
+
+## Tech Stack
+
+**Backend:**
+- Node.js + Express
+- MongoDB for database
+- TypeScript
+- Multer for file uploads
+
+**Frontend:**
+- React with TypeScript  
+- Simple CSS styling
+- Fetch API for backend calls
+
+**Mobile:**
+- React Native (Expo)
+- Same features as web version
+
+## Quick Start
+
+Make sure you have Node.js and MongoDB installed first.
+
+**Easy way - just run this:**
+```
+start.cmd
+```
+
+**Manual way:**
+1. Start MongoDB: `mongod --dbpath "C:\data\db"`
+2. Backend: `cd backend && npm install && npm run dev`
+3. Frontend: `cd frontend && npm install && npm start`
+
+## URLs
+
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:4000
+- Health check: http://localhost:4000/api/status
+
+## Scripts
+
+- `start.cmd` - Starts everything
+- `stop.cmd` - Stops everything  
+- `health.cmd` - Checks if services are running
 
 ## Project Structure
 
-- `backend/`: Node.js/Express REST API for media management
-- `frontend/`: React web application for user interaction
-- `Mobileapp/`: React Native (Expo) mobile app for iOS and Android
-
-## What is Done in Each Project
-
-### Backend
-
-- RESTful API for media upload, retrieval, and like/unlike
-- File storage and MongoDB integration
-- Handles all business logic and data persistence
-- Exposes endpoints for both frontend and mobile clients
-
-### Frontend
-
-- React web app for browsing, uploading, and liking media
-- Responsive design for desktop and mobile browsers
-- Communicates with backend API for all data operations
-- Modern UI/UX with error handling and loading states
-
-### Mobile App
-
-- React Native (Expo) app for iOS and Android
-- Mobile-friendly UI for uploading, viewing, and liking media
-- Uses device image picker for uploads
-- Pull-to-refresh, error boundaries, and consistent theming
-
-## Methods & Technologies Used
-
-- **Backend:** Node.js, Express, MongoDB, Mongoose, Multer, TypeScript
-- **Frontend:** React, TypeScript, Axios, CSS
-- **Mobile App:** React Native, Expo, TypeScript, React Navigation, Axios, Expo Image Picker
-
-## How to Run the Project
-
-1. Start the backend API (`backend/`):
-   - `npm install && npm run dev`
-2. Start the frontend (`frontend/`):
-   - `npm install && npm start`
-3. Start the mobile app (`Mobileapp/`):
-   - `npm install && npx expo start`
+```
+MINLY/
+├── backend/     # Node.js API
+├── frontend/    # React web app
+├── Mobileapp/   # React Native app
+└── *.cmd        # Management scripts
+```
 
 ## API Endpoints
 
-- `GET /api/media`: Fetch all media
-- `POST /api/media/upload`: Upload new media
-- `POST /api/media/:id/like`: Like a media item
-- `POST /api/media/:id/unlike`: Unlike a media item
+- `GET /api/media` - Get all media
+- `POST /api/media` - Upload new media
+- `POST /api/media/:id/like` - Like media
+- `POST /api/media/:id/unlike` - Unlike media  
+- `DELETE /api/media/:id` - Delete media
+
+## Features
+
+✅ File upload with drag & drop  
+✅ Image/video preview  
+✅ Like system  
+✅ Delete with confirmation  
+✅ Mobile responsive  
+✅ Error handling  
+✅ Loading states  
+
+## Common Issues
+
+**MongoDB won't start?**
+- Make sure `C:\data\db` folder exists
+- Check if MongoDB is installed properly
+
+**Port already in use?**
+- Run `stop.cmd` first
+- Or kill node processes manually
+
+**Frontend won't load media?**
+- Check if backend is running on port 4000
+- Check browser console for errors
 
 ## Notes
 
-- Make sure MongoDB is running for the backend
-- Update API URLs in config files if running on a real device
-- All apps are fully typed with TypeScript and include error handling
+- Uploads are limited to 10MB
+- Files are stored in `backend/uploads/`
+- Database is called "minly"
+- Everything is in TypeScript for better development
+
+That's it! Simple media management system for learning purposes.
+

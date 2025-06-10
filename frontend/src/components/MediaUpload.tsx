@@ -1,86 +1,73 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { uploadMedia } from "../services/mediaService";
 
-interface Props {
+interface MediaUploadProps {
   onUploadSuccess: () => void;
 }
 
-export default function MediaUpload({ onUploadSuccess }: Props) {
-  const [file, setFile] = useState<File | null>(null);
+const MediaUpload: React.FC<MediaUploadProps> = ({ onUploadSuccess }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
     setError(null);
-    if (e.target.files?.length) {
-      const selectedFile = e.target.files[0];
-      // Check file size (10MB limit)
-      if (selectedFile.size > 10 * 1024 * 1024) {
-        setError("File size exceeds 10MB limit");
-        return;
-      }
-      setFile(selectedFile);
-      // Auto upload when file is selected
-      handleUpload(selectedFile);
-    }
-  };
 
-  const handleUpload = async (selectedFile: File) => {
-    setLoading(true);
     try {
-      await uploadMedia(selectedFile);
-      setFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      await uploadMedia(file);
+      setShowModal(false);
       onUploadSuccess();
-      setIsModalOpen(false); // Close modal after successful upload
+      // Reset the input
+      event.target.value = "";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
     } finally {
-      setLoading(false);
+      setUploading(false);
     }
   };
 
   return (
     <>
+      {/* Floating upload button */}
       <button
         className="upload-button"
-        onClick={() => setIsModalOpen(true)}
-        title="Upload media"
+        onClick={() => setShowModal(!showModal)}
+        disabled={uploading}
       >
-        +
+        {uploading ? "⏳" : "+"}
       </button>
 
-      {isModalOpen && (
+      {/* Upload modal */}
+      {showModal && (
         <div className="upload-modal">
           <button
             className="close-button"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => setShowModal(false)}
           >
-            ×
+            ✕
           </button>
-          <div className="upload-form">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*,video/*"
-              onChange={onFileChange}
-              disabled={loading}
-            />
-            {error && <div className="error-message">{error}</div>}
-            {file && (
-              <div className="file-info">
-                Selected: {file.name} ({(file.size / 1024 / 1024).toFixed(2)}{" "}
-                MB)
-              </div>
-            )}
-            {loading && <div className="loading-spinner"></div>}
-          </div>
+          <h3>Upload Media</h3>
+          <input
+            type="file"
+            accept="image/*,video/*"
+            onChange={handleUpload}
+            disabled={uploading}
+          />
+          {uploading && (
+            <div className="loading-state">
+              <div className="loading-spinner"></div>
+              <p>Uploading...</p>
+            </div>
+          )}
+          {error && <div className="error-message">{error}</div>}
         </div>
       )}
     </>
   );
-}
+};
+
+export default MediaUpload;
