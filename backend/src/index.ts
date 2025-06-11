@@ -9,7 +9,7 @@ import path from "path";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = Number(process.env.PORT) || 3000;
 
 // Middleware
 app.use(cors());
@@ -52,10 +52,11 @@ app.use(
 // Start server
 const startServer = async () => {
   try {
-    await connectToDatabase();
-    app.listen(port, () => {
+    await connectToDatabase();    // Start server on all interfaces (0.0.0.0) to allow external connections
+    app.listen(port, "0.0.0.0", () => {
       console.log(`✨ Server is running on port ${port}`);
       console.log(`🏥 Health Check: http://localhost:${port}/api/status`);
+      console.log(`📱 Mobile API: http://192.168.1.17:${port}/api/status`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);

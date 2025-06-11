@@ -6,10 +6,11 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "scheme": "minly",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FF69B4"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -19,9 +20,12 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FF69B4"
       },
       "package": "com.minly.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [

@@ -16,10 +16,15 @@ interface Props {
 
 export const MediaUpload: React.FC<Props> = ({ onUploadComplete }) => {
   const [isLoading, setIsLoading] = useState(false);
+
   const pickImage = async () => {
+    console.log('📷 Button pressed - requesting permissions...');
+    
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    console.log('🔐 Permission status:', status);
     
     if (status !== "granted") {
+      console.log('❌ Permission denied');
       Alert.alert(
         "Permission needed",
         "Please grant camera roll permissions to upload media."
@@ -27,6 +32,7 @@ export const MediaUpload: React.FC<Props> = ({ onUploadComplete }) => {
       return;
     }
 
+    console.log('✅ Permission granted - opening gallery...');
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -34,10 +40,15 @@ export const MediaUpload: React.FC<Props> = ({ onUploadComplete }) => {
       quality: 1,
     });
 
+    console.log('📸 Gallery result:', result);
     if (!result.canceled && result.assets[0]) {
+      console.log('🖼️ Image selected:', result.assets[0].uri);
       handleUpload(result.assets[0].uri);
+    } else {
+      console.log('🚫 No image selected or cancelled');
     }
   };
+
   const handleUpload = async (uri: string) => {
     try {
       setIsLoading(true);
@@ -53,6 +64,7 @@ export const MediaUpload: React.FC<Props> = ({ onUploadComplete }) => {
         name: `upload.${fileType}`,
       } as any);
 
+      console.log('📤 About to upload with URI:', uri);
       await uploadMedia(formData);
       onUploadComplete();
       Alert.alert("Success", "Media uploaded successfully!");
@@ -66,7 +78,11 @@ export const MediaUpload: React.FC<Props> = ({ onUploadComplete }) => {
 
   return (
     <TouchableOpacity
-      style={[styles.floatingButton, isLoading && styles.buttonDisabled]}      onPress={pickImage}
+      style={[styles.floatingButton, isLoading && styles.buttonDisabled]}
+      onPress={() => {
+        console.log('🔘 Upload button pressed');
+        pickImage();
+      }}
       disabled={isLoading}
     >
       {isLoading ? (

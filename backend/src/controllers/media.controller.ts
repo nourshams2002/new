@@ -27,24 +27,39 @@ export const uploadMedia = async (
     if (!req.file) {
       res.status(400).json({ message: "No file uploaded" });
       return;
-    }
-
-    const maxSize = 10 * 1024 * 1024; // 10MB
+    }    const maxSize = 10 * 1024 * 1024; // 10MB
     if (req.file.size > maxSize) {
       cleanupFile(req.file.path);
       res.status(400).json({ message: "File size exceeds 10MB limit" });
       return;
-    }
+    }    console.log('📤 Upload request received');
+    console.log('📁 File:', req.file ? 'Present' : 'Missing');
+    console.log('📋 Body:', req.body);
+    console.log('📄 File details:', req.file ? {
+      originalname: req.file.originalname,
+      mimetype: req.file.mimetype,
+      size: req.file.size,
+      filename: req.file.filename
+    } : 'No file');
 
     const mediaData = {
       filename: req.file.originalname,
       filepath: `/uploads/${req.file.filename}`,
       type: req.file.mimetype.startsWith("image") ? "image" : "video",
       likes: 0,
-    };
-
+    };    console.log('💾 Saving media data:', mediaData);
     const newMedia = await new Media(mediaData).save();
-    res.status(201).json(newMedia);
+    
+    // Add full URL and title for response
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
+    const responseData = {
+      ...newMedia.toObject(),
+      url: `${baseUrl}${newMedia.filepath}`,
+      title: newMedia.filename,
+    };
+    
+    console.log('✅ Upload successful:', responseData);
+    res.status(201).json(responseData);
   } catch (error) {
     if (req.file) cleanupFile(req.file.path);
     next(error);
@@ -61,8 +76,10 @@ export const getAllMedia = async (
     const baseUrl = `${req.protocol}://${req.get("host")}`;
     const enhancedMedia = media.map((item) => ({
       _id: item._id,
+      title: item.filename, // Use filename as title for mobile app
       filename: item.filename,
       filepath: item.filepath,
+      url: `${baseUrl}${item.filepath}`, // Add full URL for mobile app
       type: item.type,
       likes: item.likes,
       createdAt: item.createdAt,

@@ -11,11 +11,10 @@ export const HomeScreen: React.FC = () => {
     // Refresh the media list after successful upload
     mediaListRef.current?.fetchMedia();
   };
-
   return (
     <View style={styles.container}>
-      <MediaUpload onUploadComplete={handleUploadComplete} />
       <MediaList ref={mediaListRef} />
+      <MediaUpload onUploadComplete={handleUploadComplete} />
     </View>
   );
 };

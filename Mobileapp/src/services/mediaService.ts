@@ -21,7 +21,7 @@ const handleApiError = (error: unknown) => {
 export const getAllMedia = async (): Promise<MediaItem[]> => {
   try {
     const response = await axios.get(`${API_URL}/media`);
-    return response.data;
+    return response.data.media || response.data;
   } catch (error) {
     throw handleApiError(error);
   }
@@ -29,13 +29,17 @@ export const getAllMedia = async (): Promise<MediaItem[]> => {
 
 export const uploadMedia = async (formData: FormData): Promise<MediaItem> => {
   try {
-    const response = await axios.post(`${API_URL}/media/upload`, formData, {
+    const response = await axios.post(`${API_URL}/media`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
+    
     return response.data;
   } catch (error) {
+    if (error instanceof AxiosError) {
+      console.error('Upload failed:', error.response?.data);
+    }
     throw handleApiError(error);
   }
 };

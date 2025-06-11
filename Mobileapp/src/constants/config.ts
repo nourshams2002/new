@@ -2,27 +2,32 @@ import { Platform } from "react-native";
 
 // API Configuration
 export const API_CONFIG = {
-  // Use different base URLs based on platform
+  // For mobile devices running in Expo Go, always use the computer's IP
+  // For simulators, use localhost
   BASE_URL: Platform.select({
-    android: "http://10.0.2.2:3000/api", // Android Emulator
-    ios: "http://localhost:3000/api", // iOS Simulator
-    default: "http://localhost:3000/api", // Fallback
+    android: "http://192.168.1.17:4000/api", // Use IP for both emulator and real device
+    ios: "http://192.168.1.17:4000/api", // Use IP for both simulator and real device  
+    web: "http://localhost:4000/api", // Web development
+    default: "http://192.168.1.17:4000/api", // Fallback
   }),
 };
 
 // Theme Configuration
 export const THEME = {
   colors: {
-    primary: "#007AFF",
-    secondary: "#5856D6",
-    background: "#f5f5f5",
+    primary: "#FF69B4", // Hot pink matching frontend
+    secondary: "#FFB6C1", // Light pink
+    background: "#FFF0F5", // Lavender blush
     surface: "#ffffff",
-    text: "#000000",
-    textSecondary: "#666666",
-    border: "#dddddd",
+    text: "#2D1B29", // Dark text
+    textSecondary: "#8B5A83", // Purple-gray text
+    border: "#F8BBD9", // Light pink border
     error: "#FF3B30",
     success: "#34C759",
     warning: "#FF9500",
+    pink: "#FF69B4",
+    lightPink: "#FFB6C1",
+    darkPink: "#C44177",
   },
   spacing: {
     xs: 4,
